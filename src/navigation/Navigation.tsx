@@ -42,7 +42,11 @@ const AuthNavigator = () => {
         component={Login}
         options={{ title: "LOGIN" }}
       />
-      <AuthStack.Screen name={ScreenNames.SignUp} component={SignUp} />
+      <AuthStack.Screen
+        name={ScreenNames.SignUp}
+        component={SignUp}
+        options={{ title: "SIGN UP" }}
+      />
     </AuthStack.Navigator>
   );
 };

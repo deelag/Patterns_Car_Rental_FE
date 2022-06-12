@@ -1,3 +1,4 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
 import {
   Keyboard,
@@ -11,14 +12,22 @@ import {
 } from "react-native";
 import Button from "../components/Button";
 import Input from "../components/Input";
+import { AuthStackParamList, ScreenNames } from "../navigation/types";
 import { COLORS } from "../utils/colors";
 
 interface IProps {}
 
-const Login = ({}: IProps) => {
+const Login = ({
+  navigation,
+}: IProps & NativeStackScreenProps<AuthStackParamList, ScreenNames.Login>) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [hidePassword, setHidePassword] = useState(true);
+
+  const onSignUpPress = () => {
+    Keyboard.dismiss();
+    navigation.navigate(ScreenNames.SignUp);
+  };
 
   return (
     <Pressable style={styles.container} onPress={Keyboard.dismiss}>
@@ -36,11 +45,11 @@ const Login = ({}: IProps) => {
           placeholder="Password"
           keyboardType="default"
           password
-          showPassword
-          setShowPassword={setShowPassword}
+          hidePassword={hidePassword}
+          setHidePassword={setHidePassword}
         />
 
-        <TouchableOpacity style={styles.signUp}>
+        <TouchableOpacity style={styles.signUp} onPress={onSignUpPress}>
           <Text style={styles.signUpText}>
             Don't have an account? Feel free to sign up!
           </Text>
@@ -72,7 +81,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 28,
   },
   fieldSpacing: {
-    marginTop: 72,
+    marginTop: 52,
   },
   signUp: {
     alignSelf: "center",

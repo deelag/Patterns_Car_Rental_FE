@@ -19,8 +19,8 @@ interface IProps {
   keyboardType: KeyboardType;
   styles?: ViewStyle;
   password?: boolean;
-  showPassword?: boolean;
-  setShowPassword?: React.Dispatch<React.SetStateAction<boolean>>;
+  hidePassword?: boolean;
+  setHidePassword?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Input = ({
@@ -30,8 +30,8 @@ const Input = ({
   keyboardType,
   styles,
   password,
-  showPassword,
-  setShowPassword,
+  hidePassword,
+  setHidePassword,
 }: IProps) => {
   const { handleBlur, handleFocus, placeHolderStyle } = useInput({ value });
 
@@ -53,7 +53,7 @@ const Input = ({
         onBlur={handleBlur}
         keyboardType={keyboardType}
         style={stylesInput.textInput}
-        secureTextEntry={showPassword}
+        secureTextEntry={hidePassword}
         keyboardAppearance="light"
       />
       <View style={stylesInput.textInputLine} />
