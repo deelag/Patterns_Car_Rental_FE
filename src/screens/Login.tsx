@@ -29,6 +29,8 @@ const Login = ({
     navigation.navigate(ScreenNames.SignUp);
   };
 
+  const onContinuePress = () => navigation.navigate(ScreenNames.TabNav);
+
   return (
     <Pressable style={styles.container} onPress={Keyboard.dismiss}>
       <View style={styles.fieldsContainer}>
@@ -60,7 +62,7 @@ const Login = ({
         keyboardVerticalOffset={80}
         style={styles.keyboardAvoidingView}
       >
-        <Button text="Continue" />
+        <Button text="Continue" onPress={onContinuePress} />
       </KeyboardAvoidingView>
     </Pressable>
   );

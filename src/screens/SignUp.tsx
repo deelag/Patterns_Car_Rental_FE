@@ -27,6 +27,8 @@ const SignUp = ({
   const [password, setPassword] = useState("");
   const [hidePassword, setHidePassword] = useState(true);
 
+  const onSignUpPress = () => navigation.navigate(ScreenNames.TabNav);
+
   return (
     <Pressable style={styles.container} onPress={Keyboard.dismiss}>
       <View style={styles.fieldsContainer}>
@@ -69,7 +71,7 @@ const SignUp = ({
         />
       </View>
       <View style={styles.keyboardAvoidingView}>
-        <Button text="Sign Up" />
+        <Button text="Sign Up" onPress={onSignUpPress} />
       </View>
     </Pressable>
   );
