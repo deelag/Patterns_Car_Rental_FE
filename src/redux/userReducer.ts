@@ -1,8 +1,10 @@
-import { SET_AUTH_TOKEN, SET_CARS } from "./userActions";
+import { SET_AGREEMENTS, SET_AUTH_TOKEN, SET_CARS } from "./userActions";
 
 const initialState = {
   authToken: null,
   cars: [],
+  agreements: [],
+  agreementCars: [],
 };
 
 export const userReducer = (state = initialState, action: any) => {
@@ -16,6 +18,12 @@ export const userReducer = (state = initialState, action: any) => {
       return {
         ...state,
         cars: action.data,
+      };
+    case SET_AGREEMENTS:
+      return {
+        ...state,
+        agreements: action.data.agreements,
+        agreementCars: action.data.agreementCars,
       };
     default:
       return state;

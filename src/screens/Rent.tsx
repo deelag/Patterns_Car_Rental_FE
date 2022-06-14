@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../redux/reduxStore";
 import { getCars } from "../redux/userActions";
 import { ICar } from "../redux/interfaces";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface Props {}
 

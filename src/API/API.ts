@@ -29,22 +29,16 @@ export const API = {
   getCars() {
     return axiosInstance.get("/cars");
   },
-  createAgreement(
-    carId: number,
-    newAgreement: IAgreement,
-    newCollateralAmount: ICollateralAmount
-  ) {
-    console.log({
-      carId,
-      newAgreement,
-      newCollateralAmount,
-    });
-
-    // TODO: fix agreements issue
+  getCarById(carId: number) {
+    return axiosInstance.get(`/cars/${carId}`);
+  },
+  createAgreement(carId: number, newAgreement: IAgreement) {
     return axiosInstance.post("/agreements", {
       carId,
       newAgreement,
-      newCollateralAmount,
     });
+  },
+  getAgreeements() {
+    return axiosInstance.get("/agreements");
   },
 };

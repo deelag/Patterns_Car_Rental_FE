@@ -58,17 +58,10 @@ const Car = ({
 
   const onPress = () => {
     dispatch(
-      rentACar(
-        item.id,
-        {
-          issueingDate: pickUpDate.getTime(),
-          expectedReturnDate: returnDate.getTime(),
-        },
-        {
-          hryvnias: lockMoney,
-          kopiykas: 0,
-        }
-      )
+      rentACar(item.id, {
+        issueingDate: pickUpDate.getTime(),
+        expectedReturnDate: returnDate.getTime(),
+      })
     );
 
     navigation.replace(ScreenNames.Success);
