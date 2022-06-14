@@ -1,9 +1,24 @@
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from "@react-navigation/native-stack";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { ScreenNames } from "../navigation/types";
+import {
+  RootStackParamList,
+  ScreenNames,
+  TabStackParamList,
+} from "../navigation/types";
+import { ICar } from "../redux/interfaces";
 import { COLORS } from "../utils/colors";
 
-interface IProps {}
+interface IProps {
+  item: ICar;
+  navigation: NativeStackNavigationProp<
+    TabStackParamList & RootStackParamList,
+    ScreenNames.Rent
+  >;
+}
 
 const RentItem = ({ item, navigation }: IProps) => {
   const onPress = () => navigation.navigate(ScreenNames.Car, { item });
@@ -12,11 +27,13 @@ const RentItem = ({ item, navigation }: IProps) => {
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.textContainer}>
         <Text style={styles.title}>{`${item.brand} ${item.type}`}</Text>
-        <Text style={styles.cost}>{`${item.rentingCost} kopiykas | day`}</Text>
+        <Text
+          style={styles.cost}
+        >{`${item.rentalCost.hryvnias} hryvnias | day`}</Text>
       </View>
       <Image
         source={{
-          uri: "https://maserati.scene7.com/is/image/maserati/maserati/regional/us/hero-website-new-upload/221340M_1920x1080.jpg",
+          uri: item.photo,
         }}
         style={styles.image}
       />

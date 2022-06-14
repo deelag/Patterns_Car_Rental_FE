@@ -15,6 +15,9 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
 import Button from "../components/Button";
+import { useDispatch } from "react-redux";
+import { rentACar } from "../redux/userActions";
+import { AppDispatch } from "../redux/reduxStore";
 
 interface Props {}
 
@@ -22,31 +25,63 @@ const Car = ({
   navigation,
   route,
 }: Props & NativeStackScreenProps<RootStackParamList, ScreenNames.Car>) => {
-  const item = route.params.item;
-  const onPress = () => navigation.replace(ScreenNames.Success);
+  const { item } = route.params;
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const rentalCostInHryvnias = item.rentalCost.hryvnias;
+  const lockMoney = rentalCostInHryvnias * 0.05;
+  const initialTotalAmount =
+    rentalCostInHryvnias +
+    lockMoney +
+    Math.round(item.rentalCost.kopiykas / 100);
+
+  const [totalAmount, setTotalAmount] = useState(initialTotalAmount);
 
   const tommorow = new Date();
   tommorow.setDate(tommorow.getDate() + 1);
+
   const [pickUpDate, setPickUpDate] = useState(new Date());
   const [returnDate, setReturnDate] = useState(tommorow);
 
   const onPickUpChange = (_: DateTimePickerEvent, selectedDate?: Date) =>
     selectedDate && setPickUpDate(selectedDate);
 
-  const onReturnDateChange = (_: DateTimePickerEvent, selectedDate?: Date) =>
-    selectedDate && setReturnDate(selectedDate);
+  const onReturnDateChange = (_: DateTimePickerEvent, selectedDate?: Date) => {
+    if (selectedDate) {
+      const numberOfDays = selectedDate.getDate() - pickUpDate.getDate();
+
+      setTotalAmount(initialTotalAmount * numberOfDays);
+      setReturnDate(selectedDate);
+    }
+  };
+
+  const onPress = () => {
+    dispatch(
+      rentACar(
+        item.id,
+        {
+          issueingDate: pickUpDate.getTime(),
+          expectedReturnDate: returnDate.getTime(),
+        },
+        {
+          hryvnias: lockMoney,
+          kopiykas: 0,
+        }
+      )
+    );
+
+    navigation.replace(ScreenNames.Success);
+  };
 
   return (
     <View style={styles.container}>
-      <Image
-        source={{
-          uri: "https://maserati.scene7.com/is/image/maserati/maserati/regional/us/hero-website-new-upload/221340M_1920x1080.jpg",
-        }}
-        style={styles.image}
-      />
+      <Image source={{ uri: item.photo }} style={styles.image} />
       <View style={styles.details}>
         <Text style={styles.title}>{`${item.brand} ${item.type}`}</Text>
-        <Text style={styles.cost}>{`${item.rentingCost} kopiykas | day`}</Text>
+        <Text
+          style={styles.cost}
+        >{`${rentalCostInHryvnias} hryvnias | day`}</Text>
         <View style={styles.dateContainer}>
           <View style={styles.dateWrapper}>
             <Text style={styles.dateHeader}>Pick-up Date</Text>
@@ -68,13 +103,13 @@ const Car = ({
           </View>
         </View>
         <Text style={styles.lockMoneyHeader}>Lock Money</Text>
-        <Text style={styles.lockMoney}>{`1000 kopiykas`}</Text>
+        <Text style={styles.lockMoney}>{`${lockMoney} hryvnias`}</Text>
       </View>
       <View style={styles.buttonContainer}>
         <View style={styles.totalPriceContainer}>
           <Text style={styles.total}>Total</Text>
           <View style={styles.totalAmountContainer}>
-            <Text style={styles.totalAmount}>1002,50</Text>
+            <Text style={styles.totalAmount}>{totalAmount}</Text>
             <Text style={styles.currency}>hryvnias</Text>
           </View>
         </View>

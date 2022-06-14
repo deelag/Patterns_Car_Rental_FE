@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "../screens/Login";
@@ -14,48 +14,75 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Rent from "../screens/Rent";
 import Car from "../screens/Car";
 import Success from "../screens/Success";
+import Agreements from "../screens/Agreements";
+import { useDispatch, useSelector } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { setAuthToken } from "../redux/userActions";
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 export const Navigation = () => {
+  const { authToken } = useSelector((state: any) => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const setToken = async () => {
+      const token = await AsyncStorage.getItem("authToken");
+
+      if (token) {
+        dispatch(setAuthToken(token));
+      }
+    };
+
+    setToken();
+  }, []);
+
   return (
     <NavigationContainer>
       <RootStack.Navigator screenOptions={{ headerShown: false }}>
-        <RootStack.Screen name={ScreenNames.TabNav} component={TabNavigator} />
-        <RootStack.Screen
-          name={ScreenNames.Car}
-          component={Car}
-          options={{
-            headerShown: true,
-            headerStyle: {
-              backgroundColor: COLORS.primary,
-            },
-            headerTintColor: COLORS.white,
-            headerTitleStyle: {
-              fontSize: 24,
-              fontWeight: "800",
-            },
-          }}
-        />
-        <RootStack.Screen
-          name={ScreenNames.Success}
-          component={Success}
-          options={{
-            headerShown: true,
-            headerStyle: {
-              backgroundColor: COLORS.primary,
-            },
-            headerTintColor: COLORS.white,
-            headerTitleStyle: {
-              fontSize: 24,
-              fontWeight: "800",
-            },
-          }}
-        />
-        <RootStack.Screen
-          name={ScreenNames.AuthNav}
-          component={AuthNavigator}
-        />
+        {authToken ? (
+          <>
+            <RootStack.Screen
+              name={ScreenNames.TabNav}
+              component={TabNavigator}
+            />
+            <RootStack.Screen
+              name={ScreenNames.Car}
+              component={Car}
+              options={{
+                headerShown: true,
+                headerStyle: {
+                  backgroundColor: COLORS.primary,
+                },
+                headerTintColor: COLORS.white,
+                headerTitleStyle: {
+                  fontSize: 24,
+                  fontWeight: "800",
+                },
+              }}
+            />
+            <RootStack.Screen
+              name={ScreenNames.Success}
+              component={Success}
+              options={{
+                headerShown: true,
+                headerStyle: {
+                  backgroundColor: COLORS.primary,
+                },
+                headerTintColor: COLORS.white,
+                headerTitleStyle: {
+                  fontSize: 24,
+                  fontWeight: "800",
+                },
+              }}
+            />
+          </>
+        ) : (
+          <RootStack.Screen
+            name={ScreenNames.AuthNav}
+            component={AuthNavigator}
+          />
+        )}
       </RootStack.Navigator>
     </NavigationContainer>
   );
@@ -114,6 +141,7 @@ const TabNavigator = () => {
       }}
     >
       <TabStack.Screen name={ScreenNames.Rent} component={Rent} />
+      <TabStack.Screen name={ScreenNames.Agreements} component={Agreements} />
     </TabStack.Navigator>
   );
 };

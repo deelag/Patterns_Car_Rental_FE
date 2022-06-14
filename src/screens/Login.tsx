@@ -10,9 +10,12 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
+import { useDispatch } from "react-redux";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { AuthStackParamList, ScreenNames } from "../navigation/types";
+import { AppDispatch } from "../redux/reduxStore";
+import { createUserData } from "../redux/userActions";
 import { COLORS } from "../utils/colors";
 
 interface IProps {}
@@ -24,12 +27,34 @@ const Login = ({
   const [password, setPassword] = useState("");
   const [hidePassword, setHidePassword] = useState(true);
 
+  const dispatch = useDispatch<AppDispatch>();
+
   const onSignUpPress = () => {
     Keyboard.dismiss();
     navigation.navigate(ScreenNames.SignUp);
   };
 
-  const onContinuePress = () => navigation.navigate(ScreenNames.TabNav);
+  const onContinuePress = () => {
+    const newClient = {
+      avatar: "https://robohash.org/amogus",
+      email,
+      password,
+    };
+    const newFullName = {
+      name: "VLAD",
+      surname: "DOROFEIEV",
+      patronymic: "FFFFFFF",
+    };
+    const newAddress = {
+      country: "Ukraine",
+      city: "AAAAA",
+      street: "Random",
+      buildingNumber: "10",
+      flatNumber: "10",
+    };
+
+    dispatch(createUserData(newClient, newFullName, newAddress));
+  };
 
   return (
     <Pressable style={styles.container} onPress={Keyboard.dismiss}>

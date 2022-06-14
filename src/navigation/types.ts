@@ -1,3 +1,5 @@
+import { ICar } from "../redux/interfaces";
+
 export enum ScreenNames {
   "AuthNav" = "AuthNav",
   "Login" = "Login",
@@ -6,13 +8,13 @@ export enum ScreenNames {
   "Rent" = "Rent",
   "Car" = "Car",
   "Success" = "Success",
+  "Agreements" = "Agreements",
 }
 
 export type RootStackParamList = {
   AuthNav: undefined;
   TabNav: undefined;
-  // TODO:
-  Car: { item: any };
+  Car: { item: ICar };
   Success: undefined;
 };
 
@@ -23,4 +25,5 @@ export type AuthStackParamList = {
 
 export type TabStackParamList = {
   Rent: undefined;
+  Agreements: undefined;
 };
